@@ -119,8 +119,6 @@ namespace ChatCommands.Commands
                 Vec3 OriginalPos = networkPeer.ControlledAgent.Position;
                 Tuple<AgentBuildData, int> retVal = SpawnAgents(networkPeer);
 
-                BasicCharacterObject basicCharacterObject;
-
                 AgentBuildData bda = retVal.Item1;
 
                 Equipment e = new Equipment(networkPeer.ControlledAgent.Character.Equipment.Clone());

@@ -144,7 +144,7 @@ namespace ChatCommands
 
         List<string> GetMapsInPool()
         {
-            return MultiplayerIntermissionVotingManager.Instance.MapVoteItems.Select(kvp => kvp.Key).ToList();
+            return MultiplayerIntermissionVotingManager.Instance.MapVoteItems.Select(kvp => kvp.Id).ToList();
         }
 
         public List<string> GetAllAvailableMaps()
@@ -321,8 +321,8 @@ namespace ChatCommands
             MultiplayerIntermissionVotingManager.Instance.IsCultureVoteEnabled = missionData.cultureVote;
             MultiplayerIntermissionVotingManager.Instance.IsMapVoteEnabled = missionData.mapVote;
             MultiplayerIntermissionVotingManager.Instance.ClearVotes();
-            MultiplayerIntermissionVotingManager.Instance.SetVotesOfCulture(missionData.cultureTeam1, 100);
-            MultiplayerIntermissionVotingManager.Instance.SetVotesOfCulture(missionData.cultureTeam2, 100);
+            MultiplayerIntermissionVotingManager.Instance.SetVotesOfCulture(int.Parse(missionData.cultureTeam1), 100);
+            MultiplayerIntermissionVotingManager.Instance.SetVotesOfCulture(int.Parse(missionData.cultureTeam2), 100);
 
         }
 
