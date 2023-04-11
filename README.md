@@ -11,6 +11,7 @@ Chat commands is a server side mod that allow players to use chat commands
 ## Installation
 
 - Download the latest release (It's located on right panel)
+- Place downloaded DLLs in Mount & Blade II Dedicated Server\bin\Win64_Shipping_Server
 - Add the following xml node to your `[Dedicated Server Files]/Modules/Multiplayer/SubModule.xml` file, between the  `<SubModules> </SubModules>` tags. 
 ```xml
 <SubModule>
