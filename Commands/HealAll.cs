@@ -19,7 +19,7 @@ namespace ChatCommands.Commands
 
         public string Description()
         {
-            return "Healing all players.";
+            return "Healing all players and horses (if mounted).";
         }
 
         public bool Execute(NetworkCommunicator networkPeer, string[] args)
@@ -29,10 +29,15 @@ namespace ChatCommands.Commands
                 if (peer.ControlledAgent != null)
                 {
                     peer.ControlledAgent.Health = peer.ControlledAgent.HealthLimit;
+                    if (peer.ControlledAgent.HasMount)
+                    {
+                        peer.ControlledAgent.MountAgent.Health = peer.ControlledAgent.MountAgent.HealthLimit;
+                    }
                 }
             }
+
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new ServerMessage("Players are heal"));
+            GameNetwork.WriteMessage(new ServerMessage("All players and their horses are healed"));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             return true;
         }

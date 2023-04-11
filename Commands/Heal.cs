@@ -27,7 +27,7 @@ namespace ChatCommands.Commands
             if (args.Length == 0)
             {
                 GameNetwork.BeginModuleEventAsServer(networkPeer);
-                GameNetwork.WriteMessage(new ServerMessage("Please provide a username. Player that contains provided input will be heal."));
+                GameNetwork.WriteMessage(new ServerMessage("Please provide a username. Player that contains provided input will be healed."));
                 GameNetwork.EndModuleEventAsServer();
                 return true;
             }
@@ -52,8 +52,12 @@ namespace ChatCommands.Commands
             if (networkPeer.ControlledAgent != null && targetPeer.ControlledAgent != null)
             {
                 targetPeer.ControlledAgent.Health = targetPeer.ControlledAgent.HealthLimit;
+                if (targetPeer.ControlledAgent.HasMount)
+                {
+                    targetPeer.ControlledAgent.MountAgent.Health = targetPeer.ControlledAgent.MountAgent.HealthLimit;
+                }
                 GameNetwork.BeginModuleEventAsServer(networkPeer);
-                GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is heal"));
+                GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is healed"));
                 GameNetwork.EndModuleEventAsServer();
                 GameNetwork.BeginModuleEventAsServer(targetPeer);
                 GameNetwork.WriteMessage(new ServerMessage("Player " + networkPeer.UserName + " healed you"));
