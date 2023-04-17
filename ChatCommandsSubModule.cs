@@ -1,19 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using ChatCommands.Patches;
+using HarmonyLib;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using HarmonyLib;
-using System.Reflection;
-using ChatCommands.Patches;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace ChatCommands
 {
-
-    
-
     public class ChatCommandsSubModule : MBSubModuleBase
     {
         public static ChatCommandsSubModule Instance { get; private set; }
