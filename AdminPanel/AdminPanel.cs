@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using TaleWorlds.MountAndBlade.DedicatedCustomServer;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.Core;
 using NetworkMessages.FromServer;
@@ -363,7 +362,7 @@ namespace ChatCommands
             EndingCurrentMissionThenStartingNewMission = true;
 
             listener.setMissionData(missionData);
-            DedicatedCustomServerSubModule.Instance.EndMission();
+           // DedicatedCustomServerSubModule.Instance.EndMission();
         }
 
         public bool StartMissionOnly(MissionData missionData)
@@ -371,7 +370,7 @@ namespace ChatCommands
             if (!MissionIsRunning)
             {
                 SetMultiplayerOptions(missionData);
-                DedicatedCustomServerSubModule.Instance.StartMission();
+                //DedicatedCustomServerSubModule.Instance.StartMission();
                 SyncMultiplayerOptionsToClients();
                 ResetFactionVoteCount();
                 return true;
@@ -384,7 +383,7 @@ namespace ChatCommands
         {
             if (MissionIsRunning)
             {
-                DedicatedCustomServerSubModule.Instance.StartMission();
+                //DedicatedCustomServerSubModule.Instance.StartMission();
             }
 
             return false;

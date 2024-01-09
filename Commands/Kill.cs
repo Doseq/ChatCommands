@@ -8,9 +8,7 @@ namespace ChatCommands.Commands
     {
         public bool CanUse(NetworkCommunicator networkPeer)
         {
-            bool isAdmin = false;
-            bool isExists = AdminManager.Admins.TryGetValue(networkPeer.VirtualPlayer.Id.ToString(), out isAdmin);
-            return isExists && isAdmin;
+            return networkPeer.IsAdmin;
         }
 
         public string Command()
@@ -51,12 +49,12 @@ namespace ChatCommands.Commands
             }
 
             if (!targetPeer.ControlledAgent.Equals(null)) {
-                Agent agent = targetPeer.ControlledAgent;
-                Blow blow = new Blow(agent.Index);
+                var agent = targetPeer.ControlledAgent;
+                var blow = new Blow(agent.Index);
                 blow.DamageType = TaleWorlds.Core.DamageTypes.Pierce;
                 blow.BoneIndex = agent.Monster.HeadLookDirectionBoneIndex;
-                blow.Position = agent.Position;
-                blow.Position.z = blow.Position.z + agent.GetEyeGlobalHeight();
+                blow.GlobalPosition = agent.Position;
+                blow.GlobalPosition.z = blow.GlobalPosition.z + agent.GetEyeGlobalHeight();
                 blow.BaseMagnitude = 2000f;
                 blow.WeaponRecord.FillAsMeleeBlow(null, null, -1, -1);
                 blow.InflictedDamage = 2000;
@@ -67,7 +65,7 @@ namespace ChatCommands.Commands
                 blow.Direction = blow.SwingDirection;
                 blow.DamageCalculated = true;
                 sbyte mainHandItemBoneIndex = agent.Monster.MainHandItemBoneIndex;
-                AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(false, false, false, true, false, false, false, false, false, false, false, false, CombatCollisionResult.StrikeAgent, -1, 0, 2, blow.BoneIndex, BoneBodyPartType.Head, mainHandItemBoneIndex, Agent.UsageDirection.AttackLeft, -1, CombatHitResultFlags.NormalHit, 0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, Vec3.Up, blow.Direction, blow.Position, Vec3.Zero, Vec3.Zero, agent.Velocity, Vec3.Up);
+                AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(false, false, false, true, false, false, false, false, false, false, false, false, CombatCollisionResult.StrikeAgent, -1, 0, 2, blow.BoneIndex, BoneBodyPartType.Head, mainHandItemBoneIndex, Agent.UsageDirection.AttackLeft, -1, CombatHitResultFlags.NormalHit, 0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, Vec3.Up, blow.Direction, blow.GlobalPosition, Vec3.Zero, Vec3.Zero, agent.Velocity, Vec3.Up);
                 agent.RegisterBlow(blow, attackCollisionDataForDebugPurpose);
             }
 

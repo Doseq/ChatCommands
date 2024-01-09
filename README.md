@@ -2,16 +2,9 @@
 
 Chat commands is a server side mod that allow players to use chat commands
 
-# Requirements For Development
-
-- Harmony for .NET Framework 4.7.2
-
-`0Harmony.dll is located in release file, If you are not going to make development you can ignore this requirement.`
-
 ## Installation
 
 - Download the latest release (It's located on right panel)
-- Place downloaded DLLs in Mount & Blade II Dedicated Server\bin\Win64_Shipping_Server
 - Add the following xml node to your `[Dedicated Server Files]/Modules/Multiplayer/SubModule.xml` file, between the  `<SubModules> </SubModules>` tags. 
 ```xml
 <SubModule>
@@ -54,33 +47,7 @@ Chat commands is a server side mod that allow players to use chat commands
 ## Usage
 
 While in the server you can open up the chat and type `!help` command to see what commands you can use.
-
-### User Commands
-- `!help` shows the help message
-- `!login <password>` Logins as an administrator
-- `!me <message>` Me command that everyone knows...
-
-### Admin Commands
-- `!ban` Bans a player. Caution ! First user that contains the provided input will be banned. Usage `!ban <Player Name>`
-- `!fade` Evaporate a player. Usage `!fade <Player name>`
-- `!godmode` Ascend yourself. Be something selestial
-- `!gold` Set gold to a player. Usage `!gold <Player Name> <amount>`
-- `!kick` Kicks a player. Caution ! First user that contains the provided input will be kicked. Usage `!kick <Player Name>`
-- `!kill` Kills a provided username. Usage `!kill <Player Name>`
-- `!tp` Teleport yourself to another. Usage `!tp <Target User>`
-- `!tptome` Teleport player to you. Usage `!tptome <Target User>`
-- `!unban` Unbans a player. Usage `!unban <Player Name>`
-- `!maps` Lists available maps for the current, or a different, game type. `!maps <game type>`
-- `!changemap` Changes the map. Use !maps to see available map IDs. `!chagemap <map id>`
-- `!mapfacs` Changes the map and the team factions. `!chagemapfacs <map id> <team1 faction> <team2 faction>`
-- `!mission` Changes the game type, map, and factions. `!mission <game type> <map id> <team1 faction> <team2 faction>`
-- `!bots` Changes the number of bots for each factions. `!bots <team1 bots> <team2 bots>`
-- `!id` Returns your unique ID `!id`
-- `!healme` Healing yourself `!healme`
-- `!heal` Healing a player `!heal <Player Name>`
-- `!healall` Heal all players `!healall`
-
-Login password is randomly generated, you can find the password under `bin/Win64_ServerShipping/chatCommands.json` and banlist is also in the same folder. 
+Requirement is to log in into server using admin password (functionality provided in BL 1.2 along with AdminPanel).
 
 ## I want to create my own command.
 
@@ -94,10 +61,8 @@ namespace ChatCommands.Commands
         // Here you can define who can use this command.
         public bool CanUse(NetworkCommunicator networkPeer) 
         {
-            bool isAdmin = false;
             // Check if the user is admin
-            bool isExists = AdminManager.Admins.TryGetValue(networkPeer.VirtualPlayer.Id.ToString(), out isAdmin);
-            return isExists && isAdmin;
+            return networkPeer.isAdmin;
         }
         
         // Define the command here. Note that mod only filters command that starts with `!`

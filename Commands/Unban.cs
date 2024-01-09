@@ -1,9 +1,5 @@
 ﻿using NetworkMessages.FromServer;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
 namespace ChatCommands.Commands
@@ -12,9 +8,7 @@ namespace ChatCommands.Commands
     {
         public bool CanUse(NetworkCommunicator networkPeer)
         {
-            bool isAdmin = false;
-            bool isExists = AdminManager.Admins.TryGetValue(networkPeer.VirtualPlayer.Id.ToString(), out isAdmin);
-            return isExists && isAdmin;
+            return networkPeer.IsAdmin;
         }
 
         public string Command()

@@ -7,9 +7,7 @@ namespace ChatCommands.Commands
     {
         public bool CanUse(NetworkCommunicator networkPeer)
         {
-            bool isAdmin = false;
-            bool isExists = AdminManager.Admins.TryGetValue(networkPeer.VirtualPlayer.Id.ToString(), out isAdmin);
-            return isExists && isAdmin;
+            return networkPeer.IsAdmin;
         }
 
         public string Command()

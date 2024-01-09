@@ -7,9 +7,7 @@ namespace ChatCommands.Commands
     {
         public bool CanUse(NetworkCommunicator networkPeer)
         {
-            bool isAdmin = false;
-            bool isExists = AdminManager.Admins.TryGetValue(networkPeer.VirtualPlayer.Id.ToString(), out isAdmin);
-            return isExists && isAdmin;
+            return networkPeer.IsAdmin;
         }
 
         public string Command()
@@ -19,7 +17,7 @@ namespace ChatCommands.Commands
 
         public string Description()
         {
-            return "Healing all players and horses (if mounted).";
+            return "Heals all players and horses (if mounted) + repairs players shields.";
         }
 
         public bool Execute(NetworkCommunicator networkPeer, string[] args)
@@ -29,6 +27,7 @@ namespace ChatCommands.Commands
                 if (peer.ControlledAgent != null)
                 {
                     peer.ControlledAgent.Health = peer.ControlledAgent.HealthLimit;
+                    peer.ControlledAgent.RestoreShieldHitPoints();
                     if (peer.ControlledAgent.HasMount)
                     {
                         peer.ControlledAgent.MountAgent.Health = peer.ControlledAgent.MountAgent.HealthLimit;
@@ -37,7 +36,7 @@ namespace ChatCommands.Commands
             }
 
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new ServerMessage("All players and their horses are healed"));
+            GameNetwork.WriteMessage(new ServerMessage("All players with their horses are healed, all shields are repaired."));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             return true;
         }

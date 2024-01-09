@@ -7,9 +7,7 @@ namespace ChatCommands.Commands
     {
         public bool CanUse(NetworkCommunicator networkPeer)
         {
-            bool isAdmin = false;
-            bool isExists = AdminManager.Admins.TryGetValue(networkPeer.VirtualPlayer.Id.ToString(), out isAdmin);
-            return isExists && isAdmin;
+            return networkPeer.IsAdmin;
         }
 
         public string Command()
@@ -19,7 +17,7 @@ namespace ChatCommands.Commands
 
         public string Description()
         {
-            return "Healing player. Usage !heal <Player Name>";
+            return "Healing player, player mount and repairs player shield. Usage !heal <Player Name>";
         }
 
         public bool Execute(NetworkCommunicator networkPeer, string[] args)
@@ -52,6 +50,7 @@ namespace ChatCommands.Commands
             if (networkPeer.ControlledAgent != null && targetPeer.ControlledAgent != null)
             {
                 targetPeer.ControlledAgent.Health = targetPeer.ControlledAgent.HealthLimit;
+                targetPeer.ControlledAgent.RestoreShieldHitPoints();
                 if (targetPeer.ControlledAgent.HasMount)
                 {
                     targetPeer.ControlledAgent.MountAgent.Health = targetPeer.ControlledAgent.MountAgent.HealthLimit;

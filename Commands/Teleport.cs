@@ -8,9 +8,7 @@ namespace ChatCommands.Commands
     {
         public bool CanUse(NetworkCommunicator networkPeer)
         {
-            bool isAdmin = false;
-            bool isExists = AdminManager.Admins.TryGetValue(networkPeer.VirtualPlayer.Id.ToString(), out isAdmin);
-            return isExists && isAdmin;
+            return networkPeer.IsAdmin;
         }
 
         public string Command()
@@ -53,7 +51,7 @@ namespace ChatCommands.Commands
 
             if (networkPeer.ControlledAgent != null && targetPeer.ControlledAgent != null) {
                 Vec3 targetPos = targetPeer.ControlledAgent.Position;
-                targetPos.x = targetPos.x + 1;
+                targetPos.x += 1;
                 networkPeer.ControlledAgent.TeleportToPosition( targetPos );
             }
 

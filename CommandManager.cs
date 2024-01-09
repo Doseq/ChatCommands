@@ -12,7 +12,7 @@ namespace ChatCommands
     {
         public static CommandManager Instance {get;set;}
 
-        public Dictionary<string, Command> commands;
+        public Dictionary<string, Command> Commands;
 
 
         public CommandManager() {
@@ -23,13 +23,12 @@ namespace ChatCommands
             }
         }
 
-        public bool Execute(NetworkCommunicator networkPeer, string command, string[] args) {
-            Command executableCommand; 
-            bool exists = commands.TryGetValue(command, out executableCommand);
+        public bool Execute(NetworkCommunicator networkPeer, string command, string[] args)
+        {
+            var exists = Commands.TryGetValue(command, out var executableCommand);
             if (!exists) {
-                // networkPeer.
                 GameNetwork.BeginModuleEventAsServer(networkPeer);
-                GameNetwork.WriteMessage(new ServerMessage("This command is not exists", false));
+                GameNetwork.WriteMessage(new ServerMessage("This command does not exists", false));
                 GameNetwork.EndModuleEventAsServer();
                 return false;
             }
@@ -43,14 +42,14 @@ namespace ChatCommands
         }
 
         private void Initialize() {
-            this.commands = new Dictionary<string, Command>();
+            this.Commands = new Dictionary<string, Command>();
             foreach (Type mytype in System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
                  .Where(mytype => mytype.GetInterfaces().Contains(typeof(Command))))
             {
-                Command command = (Command) Activator.CreateInstance(mytype);
-                if (!commands.ContainsKey(command.Command())) {
+                var command = (Command) Activator.CreateInstance(mytype);
+                if (!Commands.ContainsKey(command.Command())) {
                     Debug.Print("** Chat Command " + command.Command() + " have been initiated !", 0, Debug.DebugColor.Green);
-                    commands.Add(command.Command(), command);
+                    Commands.Add(command.Command(), command);
                 }
             }
 
